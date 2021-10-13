@@ -255,7 +255,7 @@ static int __cam_req_mgr_traverse(struct cam_req_mgr_traverse *traverse_data)
 		}
 	} else {
 		/* This pd table is not ready to proceed with asked idx */
-		CAM_INFO(CAM_CRM,
+		CAM_DBG(CAM_CRM,
 			"Skip Frame: req: %lld not ready pd: %d open_req count: %d",
 			CRM_GET_REQ_ID(traverse_data->in_q, curr_idx),
 			tbl->pd,
@@ -1152,15 +1152,10 @@ static int __cam_req_mgr_check_sync_req_is_ready(
 		 * event of sync link is skipped, so we also need to
 		 * skip this SOF event.
 		 */
-		if (req_id > sync_req_id) {
-			CAM_INFO(CAM_CRM,
-				"Timing issue, the sof event delayed of link %x sof ts:0x%x sync link handle:0x%x sync sof:0x%x req:%lld sync reqid:%lld",
-				link->link_hdl,
-				link->sof_timestamp,
-				link->sync_link->link_hdl,
-				sync_link->sof_timestamp,
-				req_id,
-				sync_req_id);
+		if (req_id >= sync_req_id) {
+			CAM_DBG(CAM_CRM,
+				"Timing issue, the sof event of link %x is delayed",
+				link->link_hdl);
 			return -EAGAIN;
 		}
 	}
@@ -1950,14 +1945,13 @@ int cam_req_mgr_process_flush_req(void *priv, void *data)
 			flush_info->req_id);
 		for (i = 0; i < in_q->num_slots; i++) {
 			slot = &in_q->slot[i];
+			tbl = link->req.l_tbl;
 			slot->req_id = -1;
 			slot->sync_mode = CAM_REQ_MGR_SYNC_MODE_NO_SYNC;
 			slot->skip_idx = 1;
 			slot->status = CRM_SLOT_STATUS_NO_REQ;
-			tbl = link->req.l_tbl;
-
-			while (tbl != NULL) {
-				CAM_DBG(CAM_CRM, "pd: %d idx: %d state: %d",
+			while(tbl != NULL) {
+				CAM_INFO(CAM_CRM, "pd: %d: idx %d state %d",
 					tbl->pd, i, tbl->slot[i].state);
 				 tbl->slot[i].req_ready_map = 0;
 				 tbl->slot[i].dev_hdl = -1;

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2021 The Linux Foundation. All rights reserved.
+ * Copyright (c) 2014-2020 The Linux Foundation. All rights reserved.
  * Copyright (C) 2013 Red Hat
  * Author: Rob Clark <robdclark@gmail.com>
  *
@@ -3081,17 +3081,24 @@ static void _sde_crtc_set_input_fence_timeout(struct sde_crtc_state *cstate)
 	cstate->input_fence_timeout_ns =
 		sde_crtc_get_property(cstate, CRTC_PROP_INPUT_FENCE_TIMEOUT);
 	cstate->input_fence_timeout_ns *= NSEC_PER_MSEC;
+
+#if defined(CONFIG_DISPLAY_SAMSUNG) || defined(CONFIG_DISPLAY_SAMSUNG_LEGO)
+	/* Increase fence timeout value to 20 sec (case 03381402 / P180412-02009) */
+	cstate->input_fence_timeout_ns *= 2;
+	pr_err("input_fence_timeout_ns %llu \n ", cstate->input_fence_timeout_ns);
+#endif
 }
 
-void _sde_crtc_clear_dim_layers_v1(struct drm_crtc_state *state)
+/**
+ * _sde_crtc_clear_dim_layers_v1 - clear all dim layer settings
+ * @cstate:      Pointer to sde crtc state
+ */
+static void _sde_crtc_clear_dim_layers_v1(struct sde_crtc_state *cstate)
 {
 	u32 i;
-	struct sde_crtc_state *cstate;
 
-	if (!state)
+	if (!cstate)
 		return;
-
-	cstate = to_sde_crtc_state(state);
 
 	for (i = 0; i < cstate->num_dim_layers; i++)
 		memset(&cstate->dim_layer[i], 0, sizeof(cstate->dim_layer[i]));
@@ -3128,7 +3135,7 @@ static void _sde_crtc_set_dim_layer_v1(struct drm_crtc *crtc,
 
 	if (!usr_ptr) {
 		/* usr_ptr is null when setting the default property value */
-		_sde_crtc_clear_dim_layers_v1(&cstate->base);
+		_sde_crtc_clear_dim_layers_v1(cstate);
 		SDE_DEBUG("dim_layer data removed\n");
 		return;
 	}
@@ -3753,9 +3760,6 @@ static void sde_crtc_atomic_begin(struct drm_crtc *crtc,
 		sde_encoder_trigger_kickoff_pending(encoder);
 	}
 
-	 /* update performance setting */
-		sde_core_perf_crtc_update(crtc, 1, false);
-
 	/*
 	 * If no mixers have been allocated in sde_crtc_atomic_check(),
 	 * it means we are trying to flush a CRTC whose state is disabled:
@@ -3901,6 +3905,9 @@ static void sde_crtc_atomic_flush(struct drm_crtc *crtc,
 		}
 		cstate->rsc_update = true;
 	}
+
+	/* update performance setting before crtc kickoff */
+	sde_core_perf_crtc_update(crtc, 1, false);
 
 	/*
 	 * Final plane updates: Give each plane a chance to complete all
@@ -4792,6 +4799,9 @@ static void sde_crtc_disable(struct drm_crtc *crtc)
 	u32 power_on;
 	bool in_cont_splash = false;
 	int ret, i;
+#if defined(CONFIG_DISPLAY_SAMSUNG)
+	int blank;
+#endif
 
 	if (!crtc || !crtc->dev || !crtc->dev->dev_private || !crtc->state) {
 		SDE_ERROR("invalid crtc\n");
@@ -4933,6 +4943,13 @@ static void sde_crtc_disable(struct drm_crtc *crtc)
 	cstate->bw_split_vote = false;
 
 	mutex_unlock(&sde_crtc->crtc_lock);
+
+
+#if defined(CONFIG_DISPLAY_SAMSUNG)
+	/* notify registered clients about suspend event */
+	blank = FB_BLANK_POWERDOWN;
+	//__msm_drm_notifier_call_chain(FB_EVENT_BLANK, &blank);
+#endif
 }
 
 static void sde_crtc_enable(struct drm_crtc *crtc,
@@ -4947,6 +4964,9 @@ static void sde_crtc_enable(struct drm_crtc *crtc,
 	u32 power_on;
 	int ret, i;
 	struct sde_crtc_state *cstate;
+#if defined(CONFIG_DISPLAY_SAMSUNG)
+	int blank;
+#endif
 
 	if (!crtc || !crtc->dev || !crtc->dev->dev_private) {
 		SDE_ERROR("invalid crtc\n");
@@ -5028,6 +5048,12 @@ static void sde_crtc_enable(struct drm_crtc *crtc,
 	/* Enable ESD thread */
 	for (i = 0; i < cstate->num_connectors; i++)
 		sde_connector_schedule_status_work(cstate->connectors[i], true);
+
+#if defined(CONFIG_DISPLAY_SAMSUNG)
+	/* notify registered clients about resume event */
+	blank = FB_BLANK_UNBLANK;
+	//__msm_drm_notifier_call_chain(FB_EVENT_BLANK, &blank);
+#endif
 }
 
 /* no input validation - caller API has all the checks */

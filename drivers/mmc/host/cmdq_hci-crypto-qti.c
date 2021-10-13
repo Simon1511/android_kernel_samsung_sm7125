@@ -225,10 +225,10 @@ int cmdq_host_init_crypto_qti_spec(struct cmdq_host *host,
 	crypto_modes_supported[blk_mode_num] |= CRYPTO_CDU_SIZE * 512;
 
 	host->ksm = keyslot_manager_create(host->mmc->parent,
-					   cmdq_num_keyslots(host), ksm_ops,
-					   BLK_CRYPTO_FEATURE_STANDARD_KEYS |
-					   BLK_CRYPTO_FEATURE_WRAPPED_KEYS,
-					   crypto_modes_supported, host);
+			cmdq_num_keyslots(host), ksm_ops,
+			BLK_CRYPTO_FEATURE_STANDARD_KEYS |
+			BLK_CRYPTO_FEATURE_WRAPPED_KEYS,
+			crypto_modes_supported, host);
 
 	if (!host->ksm) {
 		err = -ENOMEM;
@@ -426,6 +426,8 @@ int cmdq_crypto_qti_prep_desc(struct cmdq_host *host, struct mmc_request *mrq,
 	if (!(atomic_read(&keycache) & (1 << bc->bc_keyslot)))  {
 		if (bc->is_ext4)
 			cmdq_use_default_du_size = true;
+		else
+			cmdq_use_default_du_size = false;
 
 		ret = cmdq_crypto_qti_keyslot_program(host->ksm, bc->bc_key,
 						      bc->bc_keyslot);

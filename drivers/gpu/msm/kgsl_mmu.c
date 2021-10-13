@@ -1,4 +1,4 @@
-/* Copyright (c) 2002,2007-2017,2020-2021, The Linux Foundation. All rights reserved.
+/* Copyright (c) 2002,2007-2017,2021, The Linux Foundation. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -23,6 +23,10 @@
 #include "kgsl_mmu.h"
 #include "kgsl_device.h"
 #include "kgsl_sharedmem.h"
+
+#if defined(CONFIG_DISPLAY_SAMSUNG) || defined(CONFIG_DISPLAY_SAMSUNG_LEGO)
+#include <linux/delay.h>
+#endif
 
 static void pagetable_remove_sysfs_objects(struct kgsl_pagetable *pagetable);
 
@@ -394,6 +398,9 @@ kgsl_mmu_map(struct kgsl_pagetable *pagetable,
 				struct kgsl_memdesc *memdesc)
 {
 	int size;
+#if defined(CONFIG_DISPLAY_SAMSUNG) || defined(CONFIG_DISPLAY_SAMSUNG_LEGO)
+	int retry_cnt;
+#endif
 
 	if (!memdesc->gpuaddr)
 		return -EINVAL;
@@ -411,6 +418,23 @@ kgsl_mmu_map(struct kgsl_pagetable *pagetable,
 		int ret;
 
 		ret = pagetable->pt_ops->mmu_map(pagetable, memdesc);
+
+
+#if defined(CONFIG_DISPLAY_SAMSUNG) || defined(CONFIG_DISPLAY_SAMSUNG_LEGO)
+		if (ret != 0 && !in_interrupt()) {
+			for (retry_cnt = 0; retry_cnt < 62 ; retry_cnt++) {
+				/* To wait free page by memory reclaim*/
+				usleep_range(16000, 16000);
+
+				pr_err("kgsl_mmu_map failed : retry (%d) ret : %d\n", retry_cnt, ret);
+
+				ret = pagetable->pt_ops->mmu_map(pagetable, memdesc);
+				if (ret == 0)
+					break;
+			}
+		}
+#endif
+
 		if (ret)
 			return ret;
 
@@ -439,8 +463,7 @@ void kgsl_mmu_put_gpuaddr(struct kgsl_memdesc *memdesc)
 	if (memdesc->size == 0 || memdesc->gpuaddr == 0)
 		return;
 
-	if (!kgsl_memdesc_is_global(memdesc) &&
-		(KGSL_MEMDESC_MAPPED & memdesc->priv))
+	if (!kgsl_memdesc_is_global(memdesc) && (KGSL_MEMDESC_MAPPED & memdesc->priv))
 		unmap_fail = kgsl_mmu_unmap(pagetable, memdesc);
 
 	/*
