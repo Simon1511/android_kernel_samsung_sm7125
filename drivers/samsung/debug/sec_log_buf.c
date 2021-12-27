@@ -323,8 +323,9 @@ static int sec_log_store(struct notifier_block *nb,
 	switch (action) {
 	case SYS_RESTART:
 	case SYS_POWER_OFF:
-		pr_info("%s, %s, %ptR(TZ:%02d)\n",
-				action == SYS_RESTART ? "reboot" : "power off", cmd, &local_tm, -sys_tz.tz_minuteswest / 60);
+		pr_info("%ptR(TZ:%02d), %s, %s\n",
+				&local_tm, -sys_tz.tz_minuteswest / 60,
+				action == SYS_RESTART ? "reboot" : "power off", cmd);
 		write_debug_partition(debug_index_reset_klog, s_log_buf);
 		break;
 	}

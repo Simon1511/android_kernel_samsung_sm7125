@@ -1502,21 +1502,13 @@ static void start_rx_sequencer(struct uart_port *uport)
 		spin_unlock_irqrestore(&uport->lock, flags);
 	}
 
-#if !defined(CONFIG_ARCH_ATOLL)
-	/* Start RX with the RFR_OPEN to keep RFR in always ready state */
-	msm_geni_serial_enable_interrupts(uport);
-	geni_setup_s_cmd(uport->membase, UART_START_READ, geni_se_param);
-#endif
-
 	if (port->xfer_mode == SE_DMA)
 		geni_se_rx_dma_start(uport->membase, DMA_RX_BUF_SIZE,
 							&port->rx_dma);
 
-#if defined(CONFIG_ARCH_ATOLL)
 	/* Start RX with the RFR_OPEN to keep RFR in always ready state */
 	geni_setup_s_cmd(uport->membase, UART_START_READ, geni_se_param);
 	msm_geni_serial_enable_interrupts(uport);
-#endif
 
 	/* Ensure that the above writes go through */
 	mb();

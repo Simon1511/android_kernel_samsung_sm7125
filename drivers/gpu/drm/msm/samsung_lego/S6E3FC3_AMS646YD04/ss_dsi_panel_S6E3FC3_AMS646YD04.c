@@ -239,6 +239,7 @@ static struct dsi_panel_cmd_set *ss_vrr_hbm(struct samsung_display_driver_data *
 #define HBM_NORMAL_DELAY_60FPS (9)
 #define HBM_NORMAL_DELAY_90FPS (12)
 #define HBM_NORMAL_DELAY_120FPS (3)
+static bool last_br_hbm;
 
 #define get_bit(value, shift, width)	((value >> shift) & (GENMASK(width - 1, 0)))
 static struct dsi_panel_cmd_set *ss_brightness_gamma_mode2_normal
@@ -330,6 +331,7 @@ static struct dsi_panel_cmd_set *ss_brightness_gamma_mode2_normal
 	}
 
 	*level_key = LEVEL_KEY_NONE;
+	last_br_hbm = false;
 
 	return pcmds;
 }
@@ -363,13 +365,15 @@ static struct dsi_panel_cmd_set *ss_brightness_gamma_mode2_hbm
 				vdd->br_info.temperature : (char)(BIT(7) | (-1 * vdd->br_info.temperature));
 
 		if (vdd->finger_mask_updated) {
-			/* Smooth Dimming Off First */
-			if (vdd->vrr.cur_refresh_rate > 60)
-				pcmds_smooth_off->cmds[3].post_wait_ms = FRAME_WAIT_90FPS;
-			else
-				pcmds_smooth_off->cmds[3].post_wait_ms = FRAME_WAIT_60FPS;
+			if (last_br_hbm == false) { /* Normal -> HBM Case Only */
+				/* Smooth Dimming Off First */
+				if (vdd->vrr.cur_refresh_rate > 60)
+					pcmds_smooth_off->cmds[3].post_wait_ms = FRAME_WAIT_90FPS;
+				else
+					pcmds_smooth_off->cmds[3].post_wait_ms = FRAME_WAIT_60FPS;
 
-			ss_send_cmd(vdd, TX_SMOOTH_DIMMING_OFF);
+				ss_send_cmd(vdd, TX_SMOOTH_DIMMING_OFF);
+			}
 
 			/*
 				There is panel limitation for HBM & AOR setting.
@@ -414,6 +418,7 @@ static struct dsi_panel_cmd_set *ss_brightness_gamma_mode2_hbm
 	}
 
 	*level_key = LEVEL_KEY_NONE;
+	last_br_hbm = true;
 
 	return pcmds;
 }

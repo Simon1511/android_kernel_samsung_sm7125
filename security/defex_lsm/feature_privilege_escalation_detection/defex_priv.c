@@ -6,7 +6,6 @@
  * as published by the Free Software Foundation.
 */
 
-#include <linux/crc32.h>
 #include <linux/kernel.h>
 #include <linux/kobject.h>
 #include <linux/slab.h>
@@ -111,7 +110,6 @@ void task_defex_destroy_privesc_obj(struct defex_privesc *privesc)
 #ifdef DEFEX_SYSFS_ENABLE
 static struct privesc_attribute privesc_status_attribute =
 	__ATTR(status, 0660, task_defex_privesc_show_status, task_defex_privesc_store_status);
-
 
 static struct attribute *privesc_default_attrs[] = {
 	&privesc_status_attribute.attr,

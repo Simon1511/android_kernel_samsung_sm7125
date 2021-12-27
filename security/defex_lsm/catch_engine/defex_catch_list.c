@@ -6,7 +6,7 @@
  * as published by the Free Software Foundation.
 */
 
-#include <asm/uaccess.h>
+#include <linux/uaccess.h>
 #include <linux/device.h>
 #include <linux/init.h>
 #include <linux/kernel.h>
@@ -16,6 +16,12 @@
 #include <linux/unistd.h>
 #include "include/defex_catch_list.h"
 
+#ifdef DEFEX_KUNIT_ENABLED
+#ifndef __NR_syscalls
+#define __NR_syscalls   436
+#endif
+#endif
+
 #define DEFEX_CATCH_COUNT	__NR_syscalls
 const int defex_nr_syscalls = DEFEX_CATCH_COUNT;
 
@@ -23,7 +29,7 @@ const int defex_nr_syscalls = DEFEX_CATCH_COUNT;
 
 const struct local_syscall_struct *get_local_syscall(int syscall_no)
 {
-	if (syscall_no >= __NR_syscalls)
+	if ((unsigned int)syscall_no >= __NR_syscalls)
 		return NULL;
 
 	if (!syscall_catch_arr[syscall_no].local_syscall && !syscall_catch_arr[syscall_no].err_code && syscall_no) {

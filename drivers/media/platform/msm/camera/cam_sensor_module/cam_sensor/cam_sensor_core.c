@@ -19,10 +19,6 @@
 #include "cam_common_util.h"
 #include "cam_packet_util.h"
 
-#if defined(CONFIG_LEDS_SM5714)
-#include <linux/mfd/sm/sm5714/sm5714.h>
-#endif
-
 #if defined(CONFIG_GC5035_MACRO_OTP_DD_AUTOLOAD)
 #include "gc5035_macro_otp.h"
 #endif
@@ -1561,14 +1557,6 @@ int32_t cam_sensor_driver_cmd(struct cam_sensor_ctrl_t *s_ctrl,
 			goto release_mutex;
 		}
 
-		// Set the PMIC voltage to 5V for Flash operation on Rear Sensor
-#if defined(CONFIG_LEDS_SM5714)
-		if(s_ctrl->soc_info.index == 0 || s_ctrl->soc_info.index == 4)
-		{
-			sm5714_fled_mode_ctrl(SM5714_FLED_MODE_PREPARE_FLASH, 0);
-		}
-#endif
-
 		rc = cam_sensor_power_up(s_ctrl);
 		if (rc < 0) {
 			CAM_ERR(CAM_SENSOR, "Sensor Power up failed");
@@ -1601,14 +1589,6 @@ int32_t cam_sensor_driver_cmd(struct cam_sensor_ctrl_t *s_ctrl,
 			rc = -EAGAIN;
 			goto release_mutex;
 		}
-
-		// Re-Set the PMIC voltage 5V -> 9V
-#if defined(CONFIG_LEDS_SM5714)
-		if(s_ctrl->soc_info.index == 0 || s_ctrl->soc_info.index == 4)
-		{
-			sm5714_fled_mode_ctrl(SM5714_FLED_MODE_CLOSE_FLASH, 0);
-		}
-#endif
 
 		rc = cam_sensor_power_down(s_ctrl);
 		if (rc < 0) {
