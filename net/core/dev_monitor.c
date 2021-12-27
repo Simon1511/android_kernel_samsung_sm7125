@@ -20,7 +20,8 @@ struct dev_addr_info {
 
 static struct list_head dev_info;
 static struct list_head cleanup_dev_info;
-static struct work_struct cleanup_work;
+static void dev_monitor_deferred_cleanup(struct work_struct *work);
+static DECLARE_DELAYED_WORK(cleanup_work, dev_monitor_deferred_cleanup);
 
 static struct dev_addr_info *get_dev_info(struct list_head *head,
 					  struct net_device *dev, int family)
@@ -256,8 +257,9 @@ static int dev_monitor_inetaddr_event(struct notifier_block *this,
 
 		addr_info = get_dev_info(&dev_info, dev, AF_INET);
 		if (addr_info) {
-			if ((addr_info->addr.addr4 == ifa->ifa_local) &&
-					(addr_info->prefixlen != ifa->ifa_prefixlen)) {
+			__be32 mask = inet_make_mask(addr_info->prefixlen);
+
+			if (!((addr_info->addr.addr4 ^ ifa->ifa_local) & mask)) {
 				pr_err("%s %s: %pI4/%d, updated:%pI4/%d\n", __func__, dev->name,
 						&addr_info->addr.addr4, addr_info->prefixlen,
 						&ifa->ifa_local, ifa->ifa_prefixlen);
@@ -272,8 +274,8 @@ static int dev_monitor_inetaddr_event(struct notifier_block *this,
 				// tcp_disconnect calls might_sleep function
 				// so it crashes when this routine calls
 				// dev_monitor_cleanup_sock directly
-				if (!work_pending(&cleanup_work))
-					schedule_work(&cleanup_work);
+				if (!delayed_work_pending(&cleanup_work))
+					schedule_delayed_work(&cleanup_work, msecs_to_jiffies(1000));
 			}
 		}
 
@@ -331,8 +333,7 @@ static int dev_monitor_inet6addr_event(struct notifier_block *this,
 
 		addr_info = get_dev_info(&dev_info, dev, AF_INET6);
 		if (addr_info) {
-			if (ipv6_addr_equal(&addr_info->addr.addr6, &ifa->addr) &&
-					!ipv6_prefix_equal(&addr_info->addr.addr6, &ifa->addr, ifa->prefix_len)) {
+			if (ipv6_prefix_equal(&addr_info->addr.addr6, &ifa->addr, ifa->prefix_len)) {
 				pr_err("%s %s: %pI6/%d, updated:%pI6/%d\n", __func__, dev->name,
 						&addr_info->addr.addr6, addr_info->prefixlen,
 						&ifa->addr, ifa->prefix_len);
@@ -347,8 +348,8 @@ static int dev_monitor_inet6addr_event(struct notifier_block *this,
 				// tcp_disconnect calls might_sleep function
 				// so it crashes when this routine calls
 				// dev_monitor_cleanup_sock directly
-				if (!work_pending(&cleanup_work))
-					schedule_work(&cleanup_work);
+				if (!delayed_work_pending(&cleanup_work))
+					schedule_delayed_work(&cleanup_work, msecs_to_jiffies(1000));
 			}
 		}
 
@@ -386,7 +387,6 @@ static int __init dev_monitor_init(void)
 
 	INIT_LIST_HEAD(&dev_info);
 	INIT_LIST_HEAD(&cleanup_dev_info);
-	INIT_WORK(&cleanup_work, dev_monitor_deferred_cleanup);
 	ret = register_netdevice_notifier(&dev_monitor_nb);
 	if (ret) {
 		pr_err("%s: registering notifier error %d\n", __func__, ret);

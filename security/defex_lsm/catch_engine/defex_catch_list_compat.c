@@ -9,13 +9,23 @@
 #include <asm/unistd32.h>
 #include <linux/errno.h>
 #include <linux/types.h>
+#include <linux/version.h>
 #include "include/defex_catch_list.h"
 
-#ifdef __NR_seccomp
-#define __NR_compat_syscalls		(__NR_seccomp + 1)
+#if LINUX_VERSION_CODE >= KERNEL_VERSION(4, 0, 0)
+#define __COMPAT_SYSCALL_NR
+#include <asm/unistd.h>
+#else
+#ifdef __NR_clone3
+#define __NR_compat_syscalls		(__NR_clone3 + 10)
+#elif defined(__NR_rseq)
+#define __NR_compat_syscalls		(__NR_rseq + 10)
+#elif defined(__NR_seccomp)
+#define __NR_compat_syscalls		(__NR_seccomp + 10)
 #else
 #define __NR_compat_syscalls		400
-#endif /* __NR_seccomp */
+#endif
+#endif /* < KERNEL_VERSION(4, 0, 0) */
 
 #define DEFEX_CATCH_COUNT	__NR_compat_syscalls
 const int defex_nr_syscalls_compat = DEFEX_CATCH_COUNT;
@@ -24,7 +34,7 @@ const int defex_nr_syscalls_compat = DEFEX_CATCH_COUNT;
 
 const struct local_syscall_struct *get_local_syscall_compat(int syscall_no)
 {
-	if (syscall_no >= __NR_compat_syscalls)
+	if ((unsigned int)syscall_no >= __NR_compat_syscalls)
 		return NULL;
 
 	if (!syscall_catch_arr[syscall_no].local_syscall && !syscall_catch_arr[syscall_no].err_code && syscall_no) {

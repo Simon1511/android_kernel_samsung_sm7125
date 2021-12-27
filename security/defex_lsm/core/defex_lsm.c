@@ -6,7 +6,7 @@
  * as published by the Free Software Foundation.
 */
 
-#include <asm/uaccess.h>
+#include <linux/uaccess.h>
 #include <linux/device.h>
 #include <linux/init.h>
 #include <linux/kernel.h>
@@ -50,17 +50,16 @@ asmlinkage int defex_syscall_enter(long int syscallno, struct pt_regs *regs)
 }
 
 //INIT/////////////////////////////////////////////////////////////////////////
-static __init int defex_lsm_init(void)
+__visible_for_testing int __init defex_lsm_init(void)
 {
 	int ret;
 
 #ifdef DEFEX_CACHES_ENABLE
 	defex_file_cache_init();
 #endif /* DEFEX_CACHES_ENABLE */
-	creds_fast_hash_init();
 
 #ifdef DEFEX_PED_ENABLE
-	hash_init(creds_hash);
+	creds_fast_hash_init();
 #endif /* DEFEX_PED_ENABLE */
 
 	ret = defex_init_sysfs();
@@ -70,6 +69,10 @@ static __init int defex_lsm_init(void)
 	}
 
 	printk(KERN_INFO "DEFEX_LSM started");
+#ifdef DEFEX_LP_ENABLE
+	printk(KERN_INFO "[DEFEX] ADB LP Enabled");
+#endif /* DEFEX_LP_ENABLE */
+
 	return 0;
 }
 

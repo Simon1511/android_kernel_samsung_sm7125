@@ -6,7 +6,6 @@
  * as published by the Free Software Foundation.
 */
 
-#include <linux/crc32.h>
 #include <linux/kernel.h>
 #include <linux/kobject.h>
 #include <linux/slab.h>
@@ -56,7 +55,7 @@ ssize_t task_defex_safeplace_attr_store(struct kobject *kobj,
 	return attribute->store(safeplace, attribute, buf, len);
 }
 
-static void task_defex_safeplace_release(struct kobject *kobj)
+__visible_for_testing void task_defex_safeplace_release(struct kobject *kobj)
 {
 	struct defex_safeplace *safeplace_obj;
 
