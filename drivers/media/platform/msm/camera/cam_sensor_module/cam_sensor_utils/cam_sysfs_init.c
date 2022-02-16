@@ -2207,11 +2207,9 @@ static ssize_t ois_autotest_2nd_show(struct device *dev,
 	cnt = sprintf(buf, "%s, %d, %s, %d",
 		(x1_result ? "pass" : "fail"), (x1_result ? 0 : sinewave[0].sin_x),
 		(y1_result ? "pass" : "fail"), (y1_result ? 0 : sinewave[0].sin_y));
-#if !defined(CONFIG_SEC_A52Q_PROJECT)
 	cnt += sprintf(buf + cnt, ", %s, %d, %s, %d",
 		(x2_result ? "pass" : "fail"), (x2_result ? 0 : sinewave[1].sin_x),
 		(y2_result ? "pass" : "fail"), (y2_result ? 0 : sinewave[1].sin_y));
-#endif
 	pr_info("%s: result : %s\n", __func__, buf);
 
 	for (i = 0; i < 2; i++) {

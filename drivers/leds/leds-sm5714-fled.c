@@ -467,8 +467,14 @@ static ssize_t sm5714_rear_flash_store(struct device *dev, struct device_attribu
 	mutex_lock(&fled->fled_mutex);
 
 	if (store_value == 0) { /* 0: Torch or Flash OFF */
+		pr_info("sm5714-fled: %s: Torch or Flash OFF en_mled=%d en_fled=%d.\n", __func__, fled->pdata->led.en_mled, fled->pdata->led.en_fled);
+
 		if (fled->pdata->led.en_mled == false && fled->pdata->led.en_fled == false) {
 			goto out_skip;
+		}
+		if (fled->pdata->led.en_mled == false && fled->pdata->led.en_fled == true) {
+			muic_check_fled_state(0, FLED_MODE_FLASH);
+			sm5714_usbpd_check_fled_state(0, FLED_MODE_FLASH);
 		}
 		sm5714_fled_control(FLED_MODE_OFF);
 

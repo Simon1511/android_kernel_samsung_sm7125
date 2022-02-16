@@ -2990,7 +2990,7 @@ static struct mmc_cmdq_req *mmc_blk_cmdq_rw_prep(
 	} else {
 		cmdq_rq->data.flags = MMC_DATA_WRITE;
 	}
-	/* IOPP-emmc_cp-v1.0.4.4 */
+	/* IOPP-emmc_cp-v1.0.4.14 */
 	if (read_dir || req->cmd_flags & REQ_SYNC)
 		cmdq_rq->cmdq_req_flags |= PRIO;
 

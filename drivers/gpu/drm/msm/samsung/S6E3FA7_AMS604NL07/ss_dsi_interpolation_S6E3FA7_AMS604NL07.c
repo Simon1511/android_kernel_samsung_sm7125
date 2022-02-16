@@ -920,19 +920,19 @@ int table_parsing_data_S6E3FA7_AMS604NL07(struct samsung_display_driver_data *vd
 
 	struct hbm_table_format *hbm_table = (struct hbm_table_format *)table_hbm_br_info;
 
-	int hbm_step = sizeof(table_hbm_br_info) / sizeof(struct hbm_table_format);
+	int hbm_step = (int)sizeof(table_hbm_br_info) / (int)sizeof(struct hbm_table_format);
 
 
 
 	struct normal_table_format *normal_table = (struct normal_table_format *)table_normal_br_info;
 
-	int normal_step = sizeof(table_normal_br_info) / sizeof(struct normal_table_format);
+	int normal_step = (int)sizeof(table_normal_br_info) / (int)sizeof(struct normal_table_format);
 
 
 
 	struct hmd_table_format *hmd_table = (struct hmd_table_format *)table_hmd_br_info;
 
-	int hmd_step = sizeof(table_hmd_br_info) / sizeof(struct hmd_table_format);
+	int hmd_step = (int)sizeof(table_hmd_br_info) / (int)sizeof(struct hmd_table_format);
 
 
 

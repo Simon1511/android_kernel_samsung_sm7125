@@ -303,6 +303,9 @@ static void s2mu106_fled_operating_mode(struct s2mu106_fled_data *fled, int mode
 
 	value = mode << 6;
 	s2mu106_update_reg(fled->i2c, S2MU106_FLED_CTRL0, value, 0xC0);
+
+	/*P200827-05556 - change PMIC Boost switching freq from 1.4Mhz (101) to 1.75Mhz (111)*/
+	s2mu106_update_reg(fled->i2c, 0x99, 0x07, 0x0E);
 }
 
 static int s2mu106_fled_get_mode(struct s2mu106_fled_data *fled, int chan)

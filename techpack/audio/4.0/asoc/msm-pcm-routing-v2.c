@@ -23017,7 +23017,8 @@ static bool q6audio_determine_curr_copp_idx(int stream, enum sb_type func_type)
 			ret = true;
 		break;
 	case SB_FLATMOTION:
-		if (stream == MSM_FRONTEND_DAI_MULTIMEDIA11)
+		if ((stream == MSM_FRONTEND_DAI_MULTIMEDIA1) ||
+		    (stream == MSM_FRONTEND_DAI_MULTIMEDIA11))
 			ret = true;
 		break;
 	case SB_VOLUME:

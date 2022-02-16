@@ -124,6 +124,7 @@ extern int factory_mode;
 #define BATT_MISC_EVENT_TEMP_HICCUP_TYPE	0x00002000
 #define BATT_MISC_EVENT_BATTERY_HEALTH			0x000F0000
 #define BATT_MISC_EVENT_HEALTH_OVERHEATLIMIT		0x00100000
+#define BATT_MISC_EVENT_FULL_CAPACITY		0x01000000
 
 #define BATTERY_HEALTH_SHIFT                16
 enum misc_battery_health {
@@ -202,6 +203,7 @@ enum misc_battery_health {
 	GENERATE(VOTER_TOPOFF_CHANGE)	\
 	GENERATE(VOTER_HMT)	\
 	GENERATE(VOTER_DC_ERR)	\
+	GENERATE(VOTER_FULL_CAPACITY)	\
 	GENERATE(VOTER_MAX)
 
 #define GENERATE_ENUM(ENUM) ENUM,
@@ -1169,6 +1171,7 @@ struct sec_battery_info {
 #endif
 	unsigned int batt_f_mode;
 #endif
+	int batt_full_capacity;
 };
 
 /* event check */

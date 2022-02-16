@@ -1,6 +1,6 @@
 
 /*
- * sm_direct_charger.h - Direct charging module for Silicon Mitus ICs 
+ * sm_direct_charger.h - Direct charging module for Silicon Mitus ICs
  *
  * Copyright (C) 2020 Silicon Mitus Co.Ltd
  *
@@ -195,8 +195,8 @@ struct sm_dc_info {
 	} config;
 };
 
-extern struct sm_dc_info *sm_dc_create_pd_instance(const char* name, struct i2c_client *i2c);
-extern struct sm_dc_info *sm_dc_create_wpc_instance(const char* name, struct i2c_client *i2c);
+extern struct sm_dc_info *sm_dc_create_pd_instance(const char *name, struct i2c_client *i2c);
+extern struct sm_dc_info *sm_dc_create_wpc_instance(const char *name, struct i2c_client *i2c);
 extern int sm_dc_verify_configuration(struct sm_dc_info *sm_dc);
 extern void sm_dc_destroy_instance(struct sm_dc_info *sm_dc);
 
