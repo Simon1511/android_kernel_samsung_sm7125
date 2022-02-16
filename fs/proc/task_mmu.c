@@ -1832,14 +1832,14 @@ static int writeback_pte_range(pmd_t *pmd, unsigned long addr,
 	spinlock_t *ptl;
 	LIST_HEAD(swp_entry_list);
 
-	if (pmd_trans_huge(*pmd))
+	if (pmd_trans_unstable(pmd))
 		return 0;
 	if (rwsem_is_contended(&mm->mmap_sem))
 		return -1;
 	if (is_pm_freezing())
 		return -1;
 	if (zram_is_app_launch())
-		return -1;
+		return -EBUSY;
 
 	pte = pte_offset_map_lock(mm, pmd, addr, &ptl);
 	for (; addr != end; pte++, addr += PAGE_SIZE) {
@@ -1931,8 +1931,8 @@ static ssize_t reclaim_write(struct file *file, const char __user *buf,
 	struct reclaim_param rp;
 #ifdef CONFIG_ZRAM_LRU_WRITEBACK
 	struct zwbs *zwbs[NR_ZWBS];
-	int sleep_count = 0;
 #endif
+	int err = 0;
 
 	memset(buffer, 0, sizeof(buffer));
 	if (count > sizeof(buffer) - 1)
@@ -1997,11 +1997,6 @@ static ssize_t reclaim_write(struct file *file, const char __user *buf,
 			pr_info("%s alloc_zwbs failed", __func__);
 			return -ENOMEM;
 		}
-		while (zram_is_app_launch()) {
-			if (is_pm_freezing() || sleep_count++ >= 10)
-				goto out;
-			msleep(1000);
-		}
 	}
 #endif
 
@@ -2056,9 +2051,12 @@ static ssize_t reclaim_write(struct file *file, const char __user *buf,
 #endif
 
 			rp.vma = vma;
-			if (walk_page_range(vma->vm_start, vma->vm_end,
-				&reclaim_walk))
+			err = walk_page_range(vma->vm_start, vma->vm_end,
+				&reclaim_walk);
+			if (err) {
+				count = err;
 				break;
+			}
 		}
 	}
 

@@ -451,13 +451,6 @@ static int detect_conn_parse_dt(struct device *dev)
 		/*Get connector gpio number*/
 		pdata->irq_gpio[i] = of_get_named_gpio(np, "sec,det_pm_conn_gpios", i - pdata->gpio_cnt);
 		if (gpio_is_valid(pdata->irq_gpio[i])) {
-			retval = gpio_request_one(pdata->irq_gpio[i], GPIOF_DIR_IN, pdata->name[i]);
-
-			if (retval) {
-				dev_err(dev, "%s: Unable to request %s int [%d]\n",
-						__func__, pdata->name[i], pdata->irq_gpio[i]);
-				return -EINVAL;
-			}
 			SEC_CONN_PRINT("i = [%d], gpio level [%d] = %d\n", i, pdata->irq_gpio[i],
 				gpio_get_value(pdata->irq_gpio[i]));
 			SEC_CONN_PRINT("gpio irq gpio = [%d], irq = [%d]\n", pdata->irq_gpio[i],

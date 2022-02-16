@@ -46,4 +46,3 @@ config MST_LPM_CONTROL
 	default n
 	help
 	This enables the MST LPM control code
-

@@ -41,6 +41,9 @@
 #define KDP_MOUNT_SYSTEM2 "/root" // system-as-root
 #define KDP_MOUNT_SYSTEM2_LEN strlen(KDP_MOUNT_SYSTEM2)
 
+#define KDP_MOUNT_SYSTEM3 "/first_stage_ramdisk/system"
+#define KDP_MOUNT_SYSTEM3_LEN strlen(KDP_MOUNT_SYSTEM3)
+
 #define KDP_MOUNT_PRODUCT "/product"
 #define KDP_MOUNT_PRODUCT_LEN strlen(KDP_MOUNT_PRODUCT)
 
@@ -3142,6 +3145,9 @@ static void rkp_populate_sb(char *mount_point, struct vfsmount *mnt)
 		uh_call(UH_APP_RKP, RKP_KDP_X56, (u64)&sys_sb, (u64)mnt, KDP_SB_SYS, 0);
 	} else if (!sys_sb &&
 		!strncmp(mount_point, KDP_MOUNT_SYSTEM2, KDP_MOUNT_SYSTEM2_LEN)) {
+		uh_call(UH_APP_RKP, RKP_KDP_X56, (u64)&sys_sb, (u64)mnt, KDP_SB_SYS, 0);
+	} else if (!sys_sb &&
+		!strncmp(mount_point, KDP_MOUNT_SYSTEM3, KDP_MOUNT_SYSTEM3_LEN)) {
 		uh_call(UH_APP_RKP, RKP_KDP_X56, (u64)&sys_sb, (u64)mnt, KDP_SB_SYS, 0);
 	} else if (!vendor_sb &&
 		!strncmp(mount_point, KDP_MOUNT_VENDOR, KDP_MOUNT_VENDOR_LEN)) {

@@ -18,7 +18,7 @@
 #define SEC_NFC_DRIVER_NAME		"sec-nfc"
 
 #define SEC_NFC_MAX_BUFFER_SIZE	512
-#define CONFIG_SEC_NFC_DUPLICATED_IRQ_WQ
+/*#define SEC_NFC_DUPLICATED_IRQ_WQ*/	/*feature on : LSI nfc w/a, off : QC solution*/
 
 /* ioctl */
 #define SEC_NFC_MAGIC	'S'

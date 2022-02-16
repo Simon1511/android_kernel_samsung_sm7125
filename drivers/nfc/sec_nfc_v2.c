@@ -135,7 +135,7 @@ static irqreturn_t sec_nfc_irq_thread_fn(int irq, void *dev_id)
 
 	info->i2c_info.read_irq += SEC_NFC_READ_TIMES;
 
-#ifdef CONFIG_SEC_NFC_DUPLICATED_IRQ_WQ
+#ifdef SEC_NFC_DUPLICATED_IRQ_WQ
 	if (info->i2c_info.read_irq >= SEC_NFC_READ_TIMES * 2) {
 		NFC_LOG_ERR("AP called duplicated IRQ handler\n");
 		info->i2c_info.read_irq -= SEC_NFC_READ_TIMES;
@@ -434,7 +434,11 @@ int sec_nfc_i2c_probe(struct i2c_client *client)
 	gpio_direction_input(pdata->irq);
 
 	ret = request_threaded_irq(client->irq, NULL, sec_nfc_irq_thread_fn,
+#ifdef SEC_NFC_DUPLICATED_IRQ_WQ
 			IRQF_TRIGGER_RISING | IRQF_ONESHOT, SEC_NFC_DRIVER_NAME,
+#else
+			IRQF_TRIGGER_RISING | IRQF_ONESHOT | IRQF_NO_SUSPEND, SEC_NFC_DRIVER_NAME,
+#endif
 			info);
 	if (ret < 0) {
 		NFC_LOG_ERR("probe() failed to register IRQ handler\n");
