@@ -33,7 +33,7 @@
 #include <linux/semaphore.h>
 #include <linux/uaccess.h>
 #include <linux/miscdevice.h>
-#include "algo/inc/tas_smart_amp_v2.h"
+#include "../inc/tas_smart_amp_v2.h"
 #include "tas25xx-algo-intf.h"
 
 #define TAS_PAYLOAD_SIZE 14

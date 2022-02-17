@@ -1,7 +1,7 @@
-#include "physical_layer/inc/tas256x.h"
-#include "physical_layer/inc/tas2562.h"
-#include "physical_layer/inc/tas2564.h"
-#include "physical_layer/inc/tas256x-device.h"
+#include "../inc/tas256x.h"
+#include "../inc/tas2562.h"
+#include "../inc/tas2564.h"
+#include "../inc/tas256x-device.h"
 
 #define LOG_TAG "[tas256x]"
 

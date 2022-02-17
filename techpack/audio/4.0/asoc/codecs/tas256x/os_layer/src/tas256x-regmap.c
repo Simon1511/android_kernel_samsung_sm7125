@@ -37,15 +37,15 @@
 #include <linux/irq.h>
 #include <linux/pm.h>
 #include <linux/version.h>
-#include "physical_layer/inc/tas256x.h"
-#include "logical_layer/inc/tas256x-logic.h"
-#include "physical_layer/inc/tas256x-device.h"
-#include "os_layer/inc/tas256x-codec.h"
-#include "os_layer/inc/tas256x-regmap.h"
-#include "misc/tas256x-misc.h"
+#include "../../physical_layer/inc/tas256x.h"
+#include "../../logical_layer/inc/tas256x-logic.h"
+#include "../../physical_layer/inc/tas256x-device.h"
+#include "../inc/tas256x-codec.h"
+#include "../inc/tas256x-regmap.h"
+#include "../../misc/tas256x-misc.h"
 
 #if IS_ENABLED(CONFIG_TAS25XX_ALGO)
-#include "algo/inc/tas_smart_amp_v2.h"
+#include "../../algo/inc/tas_smart_amp_v2.h"
 
 #if IS_ENABLED(CONFIG_PLATFORM_QCOM)
 #include <dsp/tas_qualcomm.h>
