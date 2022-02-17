@@ -1,0 +1,132 @@
+#!/sbin/sh
+# Shell Script EDIFY Replacement: Recovery Flashable Zip
+# Methods created by osm0sis @ xda-developers
+# Script created by Simon1511@XDA
+
+OUTFD=/proc/self/fd/$2;
+ZIPFILE="$3";
+DIR=$(dirname "$ZIPFILE");
+bootloader=$(getprop ro.boot.bootloader)
+supported="12"
+
+if [ -z "`getprop ro.boot.bootloader | grep -E "A525|A725"`" ]; then
+    ui_print "This device is not supported"
+    ui_print "Aborting..."
+    exit
+fi
+
+# ui_print "<string>"
+ui_print() {
+  while [ "$1" ]; do
+    echo -e "ui_print $1
+      ui_print" >> $OUTFD;
+    shift;
+  done;
+}
+
+set_progress() {
+  echo "set_progress $1" >> $OUTFD;
+}
+
+# contains <string> <substring>
+contains() {
+  test "${1#*$2}" != "$1";
+}
+
+# unzip
+cd /tmp
+unzip -o "$ZIPFILE"
+
+ui_print " "
+ui_print "#############################"
+ui_print "    riseKernel for A52/A72   "
+ui_print " "
+#PLACEHOLDER
+ui_print " "
+ui_print "      by Simon1511@XDA     "
+ui_print "#############################"
+ui_print " "
+
+set_progress "0.25"
+
+ui_print "- Mounting partitions"
+
+# Unmount partitions
+umount /system_root
+umount /vendor
+umount /product
+umount /odm
+umount /data
+umount /efs
+
+# Mount System and vendor if existent
+mount /dev/block/bootdevice/by-name/system /system_root
+mount /dev/block/bootdevice/by-name/vendor /vendor
+
+set_progress "0.50"
+
+# Actual ROM detection
+if ls /system_root/system/build.prop; then
+
+    if [ "`grep "ro.system.build.version.release=" /system_root/system/build.prop | sed 's/ro.system.build.version.release=//g'`" -gt "$supported" ]; then
+        ui_print " "
+        ui_print "Unsupported ROM detected!"
+        ui_print "Supported: Android $supported, but Android $(grep "ro.system.build.version.release=" /system_root/system/build.prop | sed 's/ro.system.build.version.release=//g') is installed"
+        ui_print "Aborting..."
+        ui_print " "
+        exit
+    fi
+
+    # OneUI 4
+    if contains "`cat /system_root/system/build.prop`" "knox"; then
+        cd /tmp
+        
+        ui_print "- OneUI 4 detected"
+        
+        set_progress "0.75"
+        
+        ui_print "- Installing kernel..."
+        
+        sleep 3
+        
+        if contains "$bootloader" "A525"; then
+            dd if=rise/a52/oneui4.img of=/dev/block/bootdevice/by-name/boot
+        elif contains "$bootloader" "A725"; then
+            dd if=rise/a72/oneui4.img of=/dev/block/bootdevice/by-name/boot
+        fi
+
+    # AOSP S
+    elif contains "`cat /system_root/system/build.prop`" "ro.system.build.version.release=12"; then
+        cd /tmp
+        
+        ui_print "- AOSP 12.0 ROM detected"
+        
+        set_progress "0.75"
+        
+        ui_print "- Installing kernel..."
+        
+        sleep 3
+        
+        if contains "$bootloader" "A525"; then
+            dd if=rise/a52/aosp-s.img of=/dev/block/bootdevice/by-name/boot
+        elif contains "$bootloader" "A725"; then
+            dd if=rise/a72/aosp-s.img of=/dev/block/bootdevice/by-name/boot
+        fi
+    fi
+else
+    ui_print "Error detecting android version"
+    ui_print "Aborting..."
+    exit
+fi
+
+ui_print "- Unmounting partitions"
+umount /system_root
+umount /vendor
+
+# Cleanup
+rm -rf /tmp/META-INF
+rm -rf /tmp/rise
+
+ui_print "- Kernel has been successfully installed"
+set_progress "1.00"
+ui_print " "
