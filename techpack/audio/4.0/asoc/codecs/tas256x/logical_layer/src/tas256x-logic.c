@@ -1,9 +1,9 @@
-#include "logical_layer/inc/tas256x-logic.h"
-#include "physical_layer/inc/tas256x-device.h"
+#include "../inc/tas256x-logic.h"
+#include "../../physical_layer/inc/tas256x-device.h"
 #if IS_ENABLED(CONFIG_TAS25XX_ALGO)
-#include "algo/inc/tas_smart_amp_v2.h"
-#include "algo/inc/tas25xx-calib.h"
-#include "os_layer/inc/tas256x-regmap.h"
+#include "../../algo/inc/tas_smart_amp_v2.h"
+#include "../../algo/inc/tas25xx-calib.h"
+#include "../../os_layer/inc/tas256x-regmap.h"
 #endif /*CONFIG_TAS25XX_ALGO*/
 
 static int tas256x_change_book_page(struct tas256x_priv *p_tas256x,

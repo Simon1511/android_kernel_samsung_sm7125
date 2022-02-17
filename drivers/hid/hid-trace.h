@@ -19,7 +19,7 @@
 #undef TRACE_INCLUDE_PATH
 #define TRACE_INCLUDE_PATH .
 #undef TRACE_INCLUDE_FILE
-#define TRACE_INCLUDE_FILE hid-trace
+#define TRACE_INCLUDE_FILE ../../drivers/hid/hid-trace
 
 #include <linux/tracepoint.h>
 

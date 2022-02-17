@@ -39,7 +39,7 @@
 #include <linux/miscdevice.h>
 #include <linux/uaccess.h>
 
-#include "physical_layer/inc/tas256x.h"
+#include "../physical_layer/inc/tas256x.h"
 #include "tas256x-misc.h"
 #include <linux/dma-mapping.h>
 
