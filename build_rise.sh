@@ -60,7 +60,7 @@ BUILD_BOOT() {
     SET_LOCALVERSION $androidVer $dev
 
     if [[ "$variant" == "AOSP "$androidVer".0" ]] || [[ "$variant" == "OneUI "$androidVer".0" ]]; then
-        cat arch/arm64/configs/vendor/rise-"$dev"q_defconfig >> arch/arm64/configs/vendor/tmp_defconfig
+        cat arch/arm64/configs/vendor/rise-"$dev"q_defconfig > arch/arm64/configs/vendor/tmp_defconfig
 
         if [[ "$variant" == "AOSP "$androidVer".0" ]]; then
             cat arch/arm64/configs/vendor/aosp_defconfig >> arch/arm64/configs/vendor/tmp_defconfig
@@ -69,13 +69,13 @@ BUILD_BOOT() {
         fi
     fi
 
-    make $ARCH vendor/tmp_defconfig &> rise/build.log
+    make ARCH=$ARCH vendor/tmp_defconfig &> rise/build.log
 
     clear
     echo "Target: $variant for $dev"
     echo "Building..."
 
-    make -j$(nproc --all) ARCH=arm64 CC=clang CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE=aarch64-linux-android- CROSS_COMPILE_ARM32=arm-linux-androideabi- &> rise/build.log
+    make -j$(nproc --all) ARCH=$ARCH CC=clang CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE=aarch64-linux-android- CROSS_COMPILE_ARM32=arm-linux-androideabi- &> rise/build.log
 
     # Show error when the build failed
     if [ ! -f arch/arm64/boot/Image ]; then
