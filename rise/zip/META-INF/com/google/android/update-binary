@@ -90,9 +90,9 @@ if ls /system_root/system/build.prop; then
         sleep 3
         
         if contains "$bootloader" "A525"; then
-            dd if=rise/a52/oneui4.img of=/dev/block/bootdevice/by-name/boot
+            dd if=rise/a52/oneui.img of=/dev/block/bootdevice/by-name/boot
         elif contains "$bootloader" "A725"; then
-            dd if=rise/a72/oneui4.img of=/dev/block/bootdevice/by-name/boot
+            dd if=rise/a72/oneui.img of=/dev/block/bootdevice/by-name/boot
         fi
 
     # AOSP S
@@ -108,9 +108,9 @@ if ls /system_root/system/build.prop; then
         sleep 3
         
         if contains "$bootloader" "A525"; then
-            dd if=rise/a52/aosp-s.img of=/dev/block/bootdevice/by-name/boot
+            dd if=rise/a52/aosp.img of=/dev/block/bootdevice/by-name/boot
         elif contains "$bootloader" "A725"; then
-            dd if=rise/a72/aosp-s.img of=/dev/block/bootdevice/by-name/boot
+            dd if=rise/a72/aosp.img of=/dev/block/bootdevice/by-name/boot
         fi
     fi
 else
