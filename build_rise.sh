@@ -85,6 +85,24 @@ BUILD_BOOT() {
     fi
 
     rm arch/arm64/configs/vendor/tmp_defconfig
+
+    echo "Packing boot.img..."
+
+    if [[ "$variant" == "AOSP "$androidVer".0" ]]; then
+        secVar="AOSP"
+    elif [[ "$variant" == "OneUI "$androidVer".0" ]]; then
+        secVar="OneUI"
+    fi
+
+    cp $imagepath $aikpath/$secVar/split_img/boot.img-zImage
+    chmod +x $aikpath/$secVar/repackimg.sh
+    $aikpath/$secVar/repackimg.sh
+
+    clear
+
+    secVar=$(echo "$secVar" | tr '[:upper:]' '[:lower:]')
+
+    printf "\nOutput file is rise/boot_"$secVar"_"$dev".img\n\n"
 }
 
 BUILD_ALL() {
