@@ -23,7 +23,7 @@ export SUBARCH=$ARCH
 
 # Set localversion
 SET_LOCALVERSION() {
-    sed -i 's|CONFIG_LOCALVERSION=""|CONFIG_LOCALVERSION="-riseKernel-'$1'.0-'$riseVer'"|g' arch/arm64/configs/vendor/lineage-$2q_defconfig
+    sed -i 's|CONFIG_LOCALVERSION=""|CONFIG_LOCALVERSION="-riseKernel-'$1'.0-'$riseVer'"|g' arch/arm64/configs/vendor/rise-$2q_defconfig
 }
 
 BUILD_BOOT() {
@@ -60,7 +60,7 @@ BUILD_BOOT() {
     SET_LOCALVERSION $androidVer $dev
 
     if [[ "$variant" == "AOSP "$androidVer".0" ]] || [[ "$variant" == "OneUI "$androidVer".0" ]]; then
-        cat arch/arm64/configs/lineage-"$dev"q_defconfig >> arch/arm64/configs/vendor/tmp_defconfig
+        cat arch/arm64/configs/vendor/rise-"$dev"q_defconfig >> arch/arm64/configs/vendor/tmp_defconfig
 
         if [[ "$variant" == "AOSP "$androidVer".0" ]]; then
             cat arch/arm64/configs/vendor/lineage_defconfig >> arch/arm64/configs/vendor/tmp_defconfig
