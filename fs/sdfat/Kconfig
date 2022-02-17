@@ -17,7 +17,7 @@ config SDFAT_FS
 
 config SDFAT_USE_FOR_EXFAT
 	bool "Register sdFAT as exFAT"
-	default y
+	default n
 	depends on SDFAT_FS && !EXFAT_FS
 	help
 	  If you want to register sdFAT as available for exFAT, say Y.

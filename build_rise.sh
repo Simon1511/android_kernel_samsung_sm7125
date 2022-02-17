@@ -63,7 +63,7 @@ BUILD_BOOT() {
         cat arch/arm64/configs/vendor/rise-"$dev"q_defconfig >> arch/arm64/configs/vendor/tmp_defconfig
 
         if [[ "$variant" == "AOSP "$androidVer".0" ]]; then
-            cat arch/arm64/configs/vendor/lineage_defconfig >> arch/arm64/configs/vendor/tmp_defconfig
+            cat arch/arm64/configs/vendor/aosp_defconfig >> arch/arm64/configs/vendor/tmp_defconfig
         elif [[ "$variant" == "OneUI "$androidVer".0" ]]; then
             cat arch/arm64/configs/vendor/oneui_defconfig >> arch/arm64/configs/vendor/tmp_defconfig
         fi
