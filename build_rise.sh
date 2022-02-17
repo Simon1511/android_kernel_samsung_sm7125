@@ -1,6 +1,6 @@
 #!/bin/bash
 
-imagepath=arch/arm64/boot/Image.gz-dtb
+imagepath=arch/arm64/boot/Image
 aikpath=rise/AIK
 
 buildDate=$(date '+%Y%m%d')
