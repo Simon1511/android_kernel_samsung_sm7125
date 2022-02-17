@@ -135,7 +135,7 @@ BUILD_ALL() {
 }
 
 clear
-echo "Select build variant: [1-7] "
+echo "Select build variant: [1-3] "
 
 select opt in "AOSP 12.0" "OneUI 12.0" "Installation zip"
 do
