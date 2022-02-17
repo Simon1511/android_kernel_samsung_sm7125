@@ -27,7 +27,7 @@
 #include <linux/version.h>
 #include <linux/delay.h>
 #include <linux/device.h>
-#include "physical_layer/inc/tas256x.h"
+#include "../../physical_layer/inc/tas256x.h"
 
 #define CONFIG_TAS25XX_ALGO_STEREO
 #define CONFIG_SET_RE_IN_KERNEL

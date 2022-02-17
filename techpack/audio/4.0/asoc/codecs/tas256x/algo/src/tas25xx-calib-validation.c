@@ -19,7 +19,7 @@
 #include <linux/delay.h>
 #include <linux/of.h>
 #include <linux/power_supply.h>
-#include "algo/inc/tas_smart_amp_v2.h"
+#include "../inc/tas_smart_amp_v2.h"
 #include "tas25xx-calib-validation.h"
 #include "tas25xx-algo-intf.h"
 

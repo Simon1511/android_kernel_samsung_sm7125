@@ -21,8 +21,8 @@
 #include <sound/soc.h>
 #include <linux/types.h>
 #include <linux/device.h>
-#include "algo/inc/tas25xx-calib.h"
-#include "algo/inc/tas_smart_amp_v2.h"
+#include "../inc/tas25xx-calib.h"
+#include "../inc/tas_smart_amp_v2.h"
 #include "tas25xx-algo-intf.h"
 
 static int s_tas_smartamp_bypass;

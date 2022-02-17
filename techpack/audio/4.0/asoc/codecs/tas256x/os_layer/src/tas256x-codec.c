@@ -42,13 +42,13 @@
 #include <sound/tlv.h>
 #include <linux/version.h>
 
-#include "physical_layer/inc/tas256x.h"
-#include "physical_layer/inc/tas256x-device.h"
-#include "logical_layer/inc/tas256x-logic.h"
-#include "os_layer/inc/tas256x-regmap.h"
+#include "../../physical_layer/inc/tas256x.h"
+#include "../../physical_layer/inc/tas256x-device.h"
+#include "../../logical_layer/inc/tas256x-logic.h"
+#include "../inc/tas256x-regmap.h"
 #if IS_ENABLED(CONFIG_TAS25XX_ALGO)
-#include "algo/inc/tas_smart_amp_v2.h"
-#include "algo/inc/tas25xx-calib.h"
+#include "../../algo/inc/tas_smart_amp_v2.h"
+#include "../../algo/inc/tas25xx-calib.h"
 #endif /*CONFIG_TAS25XX_ALGO*/
 
 #define TAS256X_MDELAY 0xFFFFFFFE
