@@ -21,3 +21,6 @@ if [[ ! "$full" == "y" ]]; then
     rm rise/build.info
     rm arch/arm64/configs/vendor/tmp_defconfig
 fi
+
+# Always delete built DTBs/DTBOs
+rm arch/arm64/boot/dts/*/*.dtb*
