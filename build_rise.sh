@@ -1,6 +1,7 @@
 #!/bin/bash
 
 imagepath=arch/arm64/boot/Image
+dtbpath=arch/arm64/boot/dts/qcom/atoll-ab-idp.dtb
 aikpath=rise/AIK
 
 buildDate=$(date '+%Y%m%d')
@@ -95,6 +96,8 @@ BUILD_BOOT() {
     fi
 
     cp $imagepath $aikpath/$secVar/split_img/boot.img-zImage
+    cp $dtbpath $aikpath/$secVar/split_img/boot.img-dtb
+
     chmod +x $aikpath/$secVar/repackimg.sh
     $aikpath/$secVar/repackimg.sh
 

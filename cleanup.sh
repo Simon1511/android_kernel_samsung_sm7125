@@ -10,6 +10,10 @@ for i in `find rise/AIK/ -name "boot.img-zImage"`; do
     rm $i
 done
 
+for i in `find rise/AIK/ -name "boot.img-dtb"`; do
+    rm $i
+done
+
 if [[ `which git` == *"git"* ]]; then
     git checkout -- rise/AIK/*
     git checkout -- arch/arm64/configs/vendor/rise-*
