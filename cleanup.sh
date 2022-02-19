@@ -14,6 +14,10 @@ for i in `find rise/AIK/ -name "boot.img-dtb"`; do
     rm $i
 done
 
+for i in `find rise/AIK/ -name "boot.img-board"`; do
+    rm $i
+done
+
 if [[ `which git` == *"git"* ]]; then
     git checkout -- rise/AIK/*
     git checkout -- arch/arm64/configs/vendor/rise-*
@@ -28,3 +32,4 @@ fi
 
 # Always delete built DTBs/DTBOs
 rm arch/arm64/boot/dts/*/*.dtb*
+rm drivers/platform/msm/ipa/ipa_common
