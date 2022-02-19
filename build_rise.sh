@@ -98,6 +98,12 @@ BUILD_BOOT() {
     cp $imagepath $aikpath/$secVar/split_img/boot.img-zImage
     cp $dtbpath $aikpath/$secVar/split_img/boot.img-dtb
 
+    if  [[ "$dev" == "a52" ]]; then
+        echo "SRPTH31C004" > $aikpath/$secVar/split_img/boot.img-board
+    elif [[ "$dev" == "a72" ]]; then
+        echo "SRPTJ06B004" > $aikpath/$secVar/split_img/boot.img-board
+    fi
+
     chmod +x $aikpath/$secVar/repackimg.sh
     $aikpath/$secVar/repackimg.sh
 
