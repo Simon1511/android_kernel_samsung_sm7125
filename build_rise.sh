@@ -15,7 +15,7 @@ RED='\033[0;31m'
 NC='\033[0m'
 
 # Toolchain paths
-PATH="/home/simon/lineage-19.0/prebuilts/clang/host/linux-x86/clang-r383902/bin:/home/simon/lineage-19.0/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/bin:/home/simon/lineage-19.0/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9/bin:${PATH}"
+PATH="/home/simon/lineage-19.1/prebuilts/clang/host/linux-x86/clang-r383902/bin:/home/simon/lineage-19.1/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/bin:/home/simon/lineage-19.1/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9/bin:${PATH}"
 
 # Set ARCH
 ARCH=arm64
