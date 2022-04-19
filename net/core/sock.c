@@ -726,7 +726,7 @@ static int sock_set_dns_pid(struct sock *sk, char __user *optval, int optlen)
 		if (copy_from_user(&dns_pid, optval, sizeof(dns_pid)))
 			goto out;
 		memcpy(&sk->knox_dns_pid, &dns_pid, sizeof(sk->knox_dns_pid));
-		if(check_ncm_flag()) {
+		/*if(check_ncm_flag()) {
 			pid_struct = find_get_pid(dns_pid);
 			if (pid_struct != NULL) {
 				task = pid_task(pid_struct,PIDTYPE_PID);
@@ -739,7 +739,7 @@ static int sock_set_dns_pid(struct sock *sk, char __user *optval, int optlen)
 					}
 				}
 			}
-		}
+		}*/
 		ret = 0;
 	}
 
@@ -1646,7 +1646,7 @@ struct sock *sk_alloc(struct net *net, int family, gfp_t priority,
 		memset(sk->parent_process_name,'\0',sizeof(sk->parent_process_name));
 		memset(sk->dns_process_name,'\0',sizeof(sk->dns_process_name));
 		memset(sk->domain_name,'\0',sizeof(sk->domain_name));
-		if (check_ncm_flag()) {
+		/*if (check_ncm_flag()) {
 			pid_struct = find_get_pid(current->tgid);
 			if (pid_struct != NULL) {
 				task = pid_task(pid_struct, PIDTYPE_PID);
@@ -1675,7 +1675,7 @@ struct sock *sk_alloc(struct net *net, int family, gfp_t priority,
 					}
 				}
 			}
-		}
+		}*/
 		/* END_OF_KNOX_NPA */
 		
 		sk->sk_prot = sk->sk_prot_creator = prot;

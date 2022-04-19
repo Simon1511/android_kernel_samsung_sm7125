@@ -367,9 +367,9 @@ static void nf_ct_add_to_dying_list(struct nf_conn *ct)
 	struct ct_pcpu *pcpu;
 	
 	/* START_OF_KNOX_NPA */
-	if ( (check_ncm_flag()) && (ct != NULL) && (atomic_read(&ct->startFlow)) ) {
+	/*if ( (check_ncm_flag()) && (ct != NULL) && (atomic_read(&ct->startFlow)) ) {
 		knox_collect_conntrack_data(ct, NCM_FLOW_TYPE_CLOSE, 10);
-	}
+	}*/
 	/* END_OF_KNOX_NPA */
 
 	/* add this conntrack to the (per cpu) dying list */
