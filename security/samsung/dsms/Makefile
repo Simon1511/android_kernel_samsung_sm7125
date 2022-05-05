@@ -23,4 +23,5 @@ endif
 ifeq ($(CONFIG_KUNIT), y)
     GCOV_PROFILE := y
     ccflags-y += -DDSMS_KUNIT_ENABLED
+    obj-$(CONFIG_SECURITY_DSMS) += kunit_test/
 endif
