@@ -2125,9 +2125,6 @@ static u8 fts_event_handler_type_b(struct fts_ts_info *info)
 								input_info(true, &info->client->dev, "%s: failed to read FOD VI: ret: %d\n", __func__, ret);
 							} else {
 								input_info(true, &info->client->dev, "%s: FOD VI\n", __func__);
-								input_report_key(info->input_dev, KEY_WAKEUP, 1);
-								input_sync(info->input_dev);
-								input_report_key(info->input_dev, KEY_WAKEUP, 0);
 							}
 						} else {
 							input_info(true, &info->client->dev, "%s: FOD not enabled: 0x%X\n", __func__, info->lowpower_flag);
