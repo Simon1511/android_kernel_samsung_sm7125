@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3c03fd45_3dafb176",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-07-31T12:52:52Z",
+      "side": 1,
+      "message": "builds now without that upstream commit, but has no effect",
+      "revId": "3d6f85f65bbd060eb736aa0f5d2c9071e4ae0523",
+      "serverId": "f2ad53df-6715-461d-bac1-42871177773f"
+    }
+  ]
+}
