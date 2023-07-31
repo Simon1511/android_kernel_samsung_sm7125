@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f3caa10e_482355a0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-07-31T12:05:59Z",
+      "side": 1,
+      "message": "Need to rework this for proper 4.14 support",
+      "revId": "5b8c4bea47edd5e4ca1ab3b5055f9c691035cd06",
+      "serverId": "f2ad53df-6715-461d-bac1-42871177773f"
+    }
+  ]
+}
