@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4e094206_a4e75b70",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2023-10-10T12:50:04Z",
+      "side": 1,
+      "message": "tons of\nerror: incomplete definition of type \u0027struct samsung_display_driver_data\u0027",
+      "revId": "d5cdcedca28d756cba574c6f333da286e5b45b49",
+      "serverId": "f2ad53df-6715-461d-bac1-42871177773f"
+    }
+  ]
+}
