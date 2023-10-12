@@ -33,6 +33,24 @@
       "message": "https://katb.in/megepujoxis",
       "revId": "d5cdcedca28d756cba574c6f333da286e5b45b49",
       "serverId": "f2ad53df-6715-461d-bac1-42871177773f"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "62cff7f3_1f60443e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-10-12T12:09:59Z",
+      "side": 1,
+      "message": "Please check if everything still works fine with HBM/dimming. Compiles fine now.",
+      "parentUuid": "cf92c1c6_9bc58995",
+      "revId": "d5cdcedca28d756cba574c6f333da286e5b45b49",
+      "serverId": "f2ad53df-6715-461d-bac1-42871177773f"
     }
   ]
 }
