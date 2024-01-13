@@ -1,4 +1,4 @@
-﻿/*
+/*
  *  sm5713-private.h - IF-PMIC device driver for SM5713
  *
  *  Copyright (C) 2017 Samsung Electronics
