@@ -1,4 +1,4 @@
-﻿/*
+/*
  *  sm5713.h - mfd driver for SM5713.
  *
  *  Copyright (C) 2017 Samsung Electronics

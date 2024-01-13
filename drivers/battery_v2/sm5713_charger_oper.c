@@ -1,4 +1,4 @@
-﻿/*
+/*
  * sm5713-charger.c - SM5713 Charger operation mode control module.
  *
  * Copyright (C) 2017 Samsung Electronics Co.Ltd
