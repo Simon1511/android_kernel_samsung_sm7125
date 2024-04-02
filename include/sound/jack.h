@@ -106,7 +106,7 @@ enum snd_jack_types {
 #endif
 
 /* Keep in sync with definitions above */
-#define SND_JACK_SWITCH_TYPES 7
+#define SND_JACK_SWITCH_TYPES 6
 
 struct snd_jack {
 	struct list_head kctl_list;
