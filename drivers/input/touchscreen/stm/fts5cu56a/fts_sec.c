@@ -7446,6 +7446,7 @@ static void ear_detect_enable(void *device_data)
 		sec->cmd_state = SEC_CMD_STATUS_FAIL;
 	} else {
 		info->ed_enable = sec->cmd_param[0];
+		info->ed_enable = info->ed_enable != 0 ? 3 : info->ed_enable;
 		snprintf(buff, sizeof(buff), "OK");
 
 		data[0] = FTS_CMD_SET_EAR_DETECT;
