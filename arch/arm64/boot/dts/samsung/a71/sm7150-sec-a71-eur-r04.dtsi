@@ -9,7 +9,7 @@
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
 * GNU General Public License for more details. 
 */ 
-#include "sm7150-sec-a71-eur-r03.dtsi"#include "sm7150-sec-a71-eur-pinctrl-r04.dtsi"
+#include "sm7150-sec-a71-eur-r03.dtsi"#include "sm7150-sec-a71-eur-pinctrl-r04.dtsi"
 &soc { 
  
 }; 
