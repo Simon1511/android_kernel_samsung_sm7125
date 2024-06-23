@@ -50,6 +50,10 @@ SEC_GTA4XLVE_CHN_DTBO := \
 # GTA4XLVEWIFI CHN
 SEC_GTA4XLVEWIFI_CHN_DTBO := \
 		atoll-sec-gta4xlvewifi-chn-overlay-r00.dtbo
+
+# GTA4XLVEWIFI KOR
+SEC_GTA4XLVEWIFI_KOR_DTBO := \
+		atoll-sec-gta4xlvewifi-kor-overlay-r00.dtbo		
 endif
 define __sec_dtbo_build
 dtbo-$(2) += $(1)
@@ -90,6 +94,9 @@ $(eval $(call sec_dtbo_build, \
 
 $(eval $(call sec_dtbo_build, \
 		$(SEC_GTA4XLVEWIFI_CHN_DTBO),$(CONFIG_SEC_GTA4XLVEWIFI_CHN_OPEN),$(SEC_ATOLL_BASE_DTB)))
+
+$(eval $(call sec_dtbo_build, \
+		$(SEC_GTA4XLVEWIFI_KOR_DTBO),$(CONFIG_SEC_GTA4XLVEWIFI_KOR_OPEN),$(SEC_ATOLL_BASE_DTB)))
 endif
 endif
 
