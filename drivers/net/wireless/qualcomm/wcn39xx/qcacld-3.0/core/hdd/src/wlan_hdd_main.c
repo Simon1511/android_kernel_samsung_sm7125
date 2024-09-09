@@ -13252,9 +13252,8 @@ int hdd_configure_cds(struct hdd_context *hdd_ctx)
     if (!(hdd_ctx->target_type == TARGET_TYPE_QCA6290 ||
          hdd_ctx->target_type == TARGET_TYPE_QCA6390 ||
          hdd_ctx->target_type == TARGET_TYPE_QCA6490))
-        if (hdd_ctx->ol_enable)
-           dp_cbs.hdd_disable_rx_ol_in_concurrency =
-                   hdd_disable_rx_ol_in_concurrency;
+    if (hdd_ctx->ol_enable)
+         dp_cbs.hdd_disable_rx_ol_in_concurrency = hdd_disable_rx_ol_in_concurrency;
 	dp_cbs.hdd_set_rx_mode_rps_cb = hdd_set_rx_mode_rps;
 	dp_cbs.hdd_ipa_set_mcc_mode_cb = hdd_ipa_set_mcc_mode;
 	dp_cbs.hdd_v2_flow_pool_map = hdd_v2_flow_pool_map;

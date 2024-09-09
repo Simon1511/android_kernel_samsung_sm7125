@@ -1507,7 +1507,7 @@ static int tas256x_i2c_remove(struct i2c_client *p_client)
 			gpio_free(p_tas256x->devs[i]->mn_reset_gpio);
 		if (gpio_is_valid(p_tas256x->devs[i]->mn_irq_gpio))
 			gpio_free(p_tas256x->devs[i]->mn_irq_gpio);
-			kfree(p_tas256x->devs[i]);
+		kfree(p_tas256x->devs[i]);
 	}
 
 		kfree(p_tas256x->devs);

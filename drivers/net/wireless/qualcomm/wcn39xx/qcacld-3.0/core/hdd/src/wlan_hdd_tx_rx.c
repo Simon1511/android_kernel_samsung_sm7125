@@ -2135,7 +2135,7 @@ QDF_STATUS hdd_rx_deliver_to_stack(struct hdd_adapter *adapter,
         rx_ctx_id = QDF_NBUF_CB_RX_CTX_ID(skb);
 
 
-	if (qdf_atomic_read(&adapter->gro_disallowed) == 0 &&
+		if (qdf_atomic_read(&adapter->gro_disallowed) == 0 &&
 	    adapter->gro_flushed[rx_ctx_id] != 0) {
 		if (qdf_likely(soc))
 			hdd_set_fisa_disallowed_for_vdev(soc, adapter->vdev_id,
