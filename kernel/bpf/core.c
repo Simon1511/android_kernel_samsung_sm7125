@@ -31,9 +31,6 @@
 #include <linux/rbtree_latch.h>
 #include <linux/kallsyms.h>
 #include <linux/rcupdate.h>
-#ifdef CONFIG_RKP_MODULE_SUPPORT
-#include <linux/rkp.h>
-#endif
 
 #include <asm/unaligned.h>
 
@@ -558,7 +555,7 @@ static int __init bpf_jit_charge_init(void)
 {
 	/* Only used as heuristic here to derive limit. */
 	bpf_jit_limit_max = bpf_jit_alloc_exec_limit();
-	bpf_jit_limit = min_t(u64, round_up(bpf_jit_limit_max >> 2,
+	bpf_jit_limit = min_t(u64, round_up(bpf_jit_limit_max >> 1,
 					    PAGE_SIZE), LONG_MAX);
 	return 0;
 }
@@ -632,9 +629,6 @@ void bpf_jit_binary_free(struct bpf_binary_header *hdr)
 {
 	u32 pages = hdr->pages;
 
-#ifdef CONFIG_RKP_MODULE_SUPPORT
-	uh_call(UH_APP_RKP, RKP_BFP_LOAD, (u64)hdr, (u64)(hdr->pages * PAGE_SIZE), RKP_BPF_JIT_FREE, 0);
-#endif
 	module_memfree(hdr);
 	bpf_jit_uncharge_modmem(pages);
 }
@@ -1556,7 +1550,7 @@ static struct {
 	.null_prog = NULL,
 };
 
-struct bpf_prog_array __rcu *bpf_prog_array_alloc(u32 prog_cnt, gfp_t flags)
+struct bpf_prog_array *bpf_prog_array_alloc(u32 prog_cnt, gfp_t flags)
 {
 	if (prog_cnt)
 		return kzalloc(sizeof(struct bpf_prog_array) +
