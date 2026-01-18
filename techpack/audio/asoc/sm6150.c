@@ -262,7 +262,6 @@ struct msm_asoc_wcd93xx_codec {
 				   enum afe_config_type config_type);
 };
 
-
 static struct snd_soc_card snd_soc_card_sm6150_msm;
 
 /* TDM default config */

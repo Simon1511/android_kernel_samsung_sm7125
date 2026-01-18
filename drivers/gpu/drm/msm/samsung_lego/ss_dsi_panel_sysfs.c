@@ -4983,7 +4983,7 @@ static ssize_t ss_window_color_store(struct device *dev,
 {
 	struct samsung_display_driver_data *vdd =
 		(struct samsung_display_driver_data *)dev_get_drvdata(dev);
-	char color[2];
+	char color[3];
 #if defined(CONFIG_SEC_PARAM)
 	int ret = 0;
 #endif

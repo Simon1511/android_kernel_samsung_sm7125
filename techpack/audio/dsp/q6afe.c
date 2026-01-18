@@ -6152,7 +6152,6 @@ int afe_cmd_memory_map(phys_addr_t dma_addr_p, u32 dma_buf_sz)
 
 	pr_debug("%s: dma_addr_p 0x%pK , size %d\n", __func__,
 					&dma_addr_p, dma_buf_sz);
-
 	ret = afe_apr_send_pkt((uint32_t *) mmap_region_cmd,
 			&this_afe.wait[index]);
 	kfree(mmap_region_cmd);
@@ -6890,7 +6889,6 @@ int afe_dtmf_generate_rx(int64_t duration_in_ms,
 	ret = afe_apr_send_pkt((uint32_t *) &cmd_dtmf,
 			&this_afe.wait[index]);
 	return ret;
-
 fail_cmd:
 	pr_err("%s: failed %d\n", __func__, ret);
 	return ret;

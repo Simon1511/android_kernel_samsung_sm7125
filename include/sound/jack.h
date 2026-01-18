@@ -63,9 +63,9 @@ enum snd_jack_types {
 	SND_JACK_OC_HPHL        = 0x0000040,
 	SND_JACK_OC_HPHR        = 0x0000080,
 	SND_JACK_UNSUPPORTED    = 0x0000100,
-	SND_JACK_MICROPHONE2    = 0x0000200,
-	SND_JACK_ANC_HEADPHONE  = SND_JACK_HEADPHONE | SND_JACK_MICROPHONE |
-				  SND_JACK_MICROPHONE2,
+        SND_JACK_MICROPHONE2    = 0x0000200,
+        SND_JACK_ANC_HEADPHONE  = SND_JACK_HEADPHONE | SND_JACK_MICROPHONE |
+                                  SND_JACK_MICROPHONE2,
 
 	/* Kept separate from switches to facilitate implementation */
 	SND_JACK_BTN_0          = 0x4000000,
@@ -90,9 +90,9 @@ enum snd_jack_types {
 	SND_JACK_OC_HPHL        = 0x0040,
 	SND_JACK_OC_HPHR        = 0x0080,
 	SND_JACK_UNSUPPORTED    = 0x0100,
-	SND_JACK_MICROPHONE2    = 0x0200,
-	SND_JACK_ANC_HEADPHONE  = SND_JACK_HEADPHONE | SND_JACK_MICROPHONE |
-				  SND_JACK_MICROPHONE2,
+        SND_JACK_MICROPHONE2    = 0x0200,
+        SND_JACK_ANC_HEADPHONE  = SND_JACK_HEADPHONE | SND_JACK_MICROPHONE |
+                                  SND_JACK_MICROPHONE2,
 
 	/* Kept separate from switches to facilitate implementation */
 	SND_JACK_BTN_0		= 0x8000,
@@ -114,6 +114,7 @@ struct snd_jack {
 	const char *id;
 #ifdef CONFIG_SND_JACK_INPUT_DEV
 	struct input_dev *input_dev;
+	struct mutex input_dev_lock;
 	int registered;
 	int type;
 	char name[100];

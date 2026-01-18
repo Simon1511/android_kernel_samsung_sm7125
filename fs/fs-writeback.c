@@ -513,7 +513,7 @@ static void inode_switch_wbs(struct inode *inode, int new_wb_id)
 	rcu_read_lock();
 	memcg_css = css_from_id(new_wb_id, &memory_cgrp_subsys);
 	if (memcg_css)
-		isw->new_wb = wb_get_create(bdi, memcg_css, GFP_ATOMIC);
+	isw->new_wb = wb_get_create(bdi, memcg_css, GFP_ATOMIC);
 	rcu_read_unlock();
 	if (!isw->new_wb)
 		goto out_free;

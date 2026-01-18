@@ -1,4 +1,4 @@
-/* Copyright (c)2017-2020, The Linux Foundation. All rights reserved.
+/* Copyright (c)2017-2021, The Linux Foundation. All rights reserved.
  * Copyright (c) 2024 Qualcomm Innovation Center, Inc. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
@@ -956,6 +956,20 @@ static void a6xx_start(struct adreno_device *adreno_dev)
 	if (adreno_is_preemption_enabled(adreno_dev))
 		kgsl_regwrite(device, A6XX_RB_CONTEXT_SWITCH_GMEM_SAVE_RESTORE,
 			0x1);
+	/*
+	 * Enable GMU power counter 0 to count GPU busy. This is applicable to
+	 * all a6xx targets
+	 */
+	kgsl_regwrite(device, A6XX_GPU_GMU_AO_GPU_CX_BUSY_MASK, 0xff000000);
+	/*
+	 * A610 GPU has only one power counter fixed to count GPU busy
+	 * cycles with no select register.
+	 */
+	if (!adreno_is_a610(adreno_dev))
+		kgsl_regrmw(device,
+				A6XX_GMU_CX_GMU_POWER_COUNTER_SELECT_0,
+				0xff, 0x20);
+	kgsl_regwrite(device, A6XX_GMU_CX_GMU_POWER_COUNTER_ENABLE, 0x1);
 
 	/*
 	 * Enable GMU power counter 0 to count GPU busy. This is applicable to
@@ -2936,6 +2950,14 @@ static void a6xx_platform_setup(struct adreno_device *adreno_dev)
 	if (ADRENO_FEATURE(adreno_dev, ADRENO_SPTP_PC))
 		set_bit(ADRENO_SPTP_PC_CTRL, &adreno_dev->pwrctrl_flag);
 		
+	/* Set the counter for IFPC */
+	if (ADRENO_FEATURE(adreno_dev, ADRENO_IFPC))
+		adreno_dev->perfctr_ifpc_lo =
+			A6XX_GMU_CX_GMU_POWER_COUNTER_XOCLK_4_L;
+
+	/* Set the GPU busy counter for frequency scaling */
+	adreno_dev->perfctr_pwr_lo = A6XX_GMU_CX_GMU_POWER_COUNTER_XOCLK_0_L;
+
 	/* Set the counter for IFPC */
 	if (ADRENO_FEATURE(adreno_dev, ADRENO_IFPC))
 		adreno_dev->perfctr_ifpc_lo =

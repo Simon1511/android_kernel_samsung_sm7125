@@ -1700,14 +1700,16 @@ static void add_dirconn_tlmm(struct irq_data *d, irq_hw_number_t irq)
 			offset_local = ((dir_conn_data->hwirq - 32) / 32) * 4;
 			if (spi_cfg_reg < pctrl->spi_cfg_end) {
 				raw_spin_lock_irqsave(&pctrl->lock, flags);
-				val = readl_relaxed(pctrl->spi_base + offset_local);
+				val = readl_relaxed(pctrl->spi_base
+							+ offset_local);
 				/*
 				 * Clear the respective bit for edge type
 				 * interrupt
 				 */
 				val &= ~(1 << ((dir_conn_data->hwirq - 32)
 									% 32));
-				writel_relaxed(val, pctrl->spi_base + offset_local);
+				writel_relaxed(val, pctrl->spi_base
+							+ offset_local);
 				raw_spin_unlock_irqrestore(&pctrl->lock, flags);
 			} else
 				pr_err("%s: type config failed for SPI: %lu\n",

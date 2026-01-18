@@ -37,6 +37,7 @@
 #include <linux/compaction.h>
 #include <linux/device.h>
 #include <linux/rmap.h>
+#include <linux/khugepaged.h>
 
 #include <asm/tlbflush.h>
 
@@ -885,8 +886,8 @@ static inline struct zone *default_zone_for_pfn(int nid, unsigned long start_pfn
 	return movable_node_enabled ? movable_zone : kernel_zone;
 }
 
-struct zone * zone_for_pfn_range(int online_type, int nid, unsigned start_pfn,
-		unsigned long nr_pages)
+struct zone *zone_for_pfn_range(int online_type, int nid,
+		unsigned long start_pfn, unsigned long nr_pages)
 {
 	if (online_type == MMOP_ONLINE_KERNEL)
 		return default_kernel_zone_for_pfn(nid, start_pfn, nr_pages);
@@ -968,6 +969,7 @@ int __ref online_pages(unsigned long pfn, unsigned long nr_pages, int online_typ
 	}
 
 	init_per_zone_wmark_min();
+        khugepaged_min_free_kbytes_update();
 
 	if (onlined_pages) {
 		kswapd_run(nid);
@@ -1770,6 +1772,7 @@ repeat:
 	pgdat_resize_unlock(zone->zone_pgdat, &flags);
 
 	init_per_zone_wmark_min();
+	khugepaged_min_free_kbytes_update();
 
 	if (!populated_zone(zone)) {
 		zone_pcp_reset(zone);

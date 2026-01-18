@@ -541,6 +541,7 @@ static inline bool nicvf_xdp_rx(struct nicvf *nic, struct bpf_prog *prog,
 
 	xdp.data_hard_start = page_address(page);
 	xdp.data = (void *)cpu_addr;
+	xdp_set_data_meta_invalid(&xdp);
 	xdp.data_end = xdp.data + len;
 	orig_data = xdp.data;
 
@@ -1152,7 +1153,7 @@ static int nicvf_register_misc_interrupt(struct nicvf *nic)
 	if (ret < 0) {
 		netdev_err(nic->netdev,
 			   "Req for #%d msix vectors failed\n", nic->num_vec);
-		return 1;
+		return ret;
 	}
 
 	sprintf(nic->irq_name[irq], "%s Mbox", "NICVF");
@@ -1171,7 +1172,7 @@ static int nicvf_register_misc_interrupt(struct nicvf *nic)
 	if (!nicvf_check_pf_ready(nic)) {
 		nicvf_disable_intr(nic, NICVF_INTR_MBOX, 0);
 		nicvf_unregister_interrupts(nic);
-		return 1;
+		return -EIO;
 	}
 
 	return 0;
@@ -1787,7 +1788,6 @@ static int nicvf_xdp(struct net_device *netdev, struct netdev_bpf *xdp)
 	case XDP_SETUP_PROG:
 		return nicvf_xdp_setup(nic, xdp->prog);
 	case XDP_QUERY_PROG:
-		xdp->prog_attached = !!nic->xdp_prog;
 		xdp->prog_id = nic->xdp_prog ? nic->xdp_prog->aux->id : 0;
 		return 0;
 	default:

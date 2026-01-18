@@ -2056,7 +2056,6 @@ static int swrm_probe(struct platform_device *pdev)
 		}
 
 	}
-
 	ret = swr_register_master(&swrm->master);
 	if (ret) {
 		dev_err(&pdev->dev, "%s: error adding swr master\n", __func__);

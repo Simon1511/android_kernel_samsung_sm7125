@@ -483,7 +483,6 @@ static void voip_process_ul_pkt(uint8_t *voc_pkt,
 							dsp_flags);
 					return;
 				}
-
 				/* There are two frames in the buffer. Length
 				 * of the second frame:
 				 */

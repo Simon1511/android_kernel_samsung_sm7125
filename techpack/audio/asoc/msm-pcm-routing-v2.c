@@ -2703,7 +2703,6 @@ static void msm_routing_get_lsm_fe_idx(struct snd_kcontrol *kcontrol,
 	pr_debug("%s: fe_id: %d, fe_idx:%d\n", __func__, fe_id, *fe_idx);
 }
 
-
 static int msm_routing_lsm_port_get(struct snd_kcontrol *kcontrol,
 				   struct snd_ctl_elem_value *ucontrol)
 {
